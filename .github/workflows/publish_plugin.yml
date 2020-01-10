@@ -6,11 +6,11 @@ on:
       - master
 
 jobs:
-  verify_version:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: jsvd/logstash-plugin-actions@master
+  #  verify_version:
+  #    runs-on: ubuntu-latest
+  #  steps:
+  #  - uses: actions/checkout@v1
+  #  - uses: jsvd/logstash-plugin-actions@master
   publish:
     needs: verify_version
     runs-on: ubuntu-latest
