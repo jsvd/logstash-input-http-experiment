@@ -18,7 +18,7 @@ jobs:
     - name: Verify if version was bumped
       run: ruby action.rb
   publish:
-    #needs: verify_version
+    needs: verify_version
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
