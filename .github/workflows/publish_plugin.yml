@@ -16,6 +16,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/setup-ruby@v1
+      with:
+        ruby-version: '2.x'
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '11.0.x'
+        java-package: jre
+        architecture: x64
     - name: Install devutils
       run: gem install logstash-devutils
     - name: Vendor
