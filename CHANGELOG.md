@@ -1,4 +1,7 @@
-## 3.3.4
+## 3.3.5
+ - Yet Another fake bump
+
+## 3.3.5
  - Another fake bump
 
 ## 3.3.3
