@@ -24,7 +24,7 @@ jobs:
         id: waitforstatuschecks
         uses: "WyriHaximus/github-action-wait-for-status@0.1.0"
         with:
-          ignoreActions: verify_version
+          ignoreActions: wait_for_travis
           checkInterval: 10
   publish:
     needs: [verify_version, wait_for_travis]
