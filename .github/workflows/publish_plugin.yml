@@ -6,11 +6,17 @@ on:
       - master
 
 jobs:
-  #  verify_version:
-  #    runs-on: ubuntu-latest
-  #  steps:
-  #  - uses: actions/checkout@v1
-  #  - uses: jsvd/logstash-plugin-actions@master
+  verify_version:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-ruby@v1
+      with:
+        ruby-version: '2.x'
+    - name: Fetch ruby script
+      run: wget https://raw.githubusercontent.com/jsvd/logstash-plugin-actions/master/action.rb
+    - name: Verify if version was bumped
+      run: ruby action.rb
   publish:
     #needs: verify_version
     runs-on: ubuntu-latest
