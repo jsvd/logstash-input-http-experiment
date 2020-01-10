@@ -17,20 +17,18 @@ jobs:
       run: wget https://raw.githubusercontent.com/jsvd/logstash-plugin-actions/master/action.rb
     - name: Verify if version was bumped
       run: ruby action.rb
-  wait_for_travis:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Waiting for CI'
-        id: waitforstatuschecks
-        uses: "WyriHaximus/github-action-wait-for-status@0.1.0"
-        with:
-          ignoreActions: wait_for_travis
-          checkInterval: 10
   publish:
-    needs: [verify_version, wait_for_travis]
+    needs: verify_version
     runs-on: ubuntu-latest
     steps:
+    - name: 'Waiting for CI'
+      id: waitforstatuschecks
+      uses: "WyriHaximus/github-action-wait-for-status@0.1.0"
+      with:
+        ignoreActions: wait_for_travis
+        checkInterval: 10
     - uses: actions/checkout@v1
+      if: steps.waitforstatuschecks.outputs.status == 'success'
     - uses: eregon/use-ruby-action@master
       with:
         ruby-version: jruby
