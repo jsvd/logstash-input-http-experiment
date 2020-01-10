@@ -1,3 +1,6 @@
+## 3.3.3
+ - FAke bump
+
 ## 3.3.2
  - Update netty and tcnative dependency [#118](https://github.com/logstash-plugins/logstash-input-http/issues/118)
 
