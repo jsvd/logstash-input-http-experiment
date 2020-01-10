@@ -1,4 +1,4 @@
-## 3.3.5
+## 3.3.6
  - Yet Another fake bump
 
 ## 3.3.5
