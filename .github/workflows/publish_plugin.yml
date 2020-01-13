@@ -42,5 +42,7 @@ jobs:
       run: gem build *.gemspec
     - name: Publish gem
       run: echo "publish"
+    - name: Compute current version
+      run: ruby -rrubygems -e "puts Gem::Specification.load('logstash-input-http.gemspec').version" > GEMSPEC_VERSION
     - name: Push tag
       run: git tag "v$(cat GEMSPEC_VERSION)" && git push "v$(cat GEMSPEC_VERSION)"
