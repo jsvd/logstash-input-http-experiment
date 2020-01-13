@@ -27,8 +27,10 @@ jobs:
       with:
         ignoreActions: publish
         checkInterval: 10
+    - name: Abort publish
+      if: steps.waitforstatuschecks.outputs.status == 'failure'
+      run: exit 1
     - uses: actions/checkout@v1
-      if: steps.waitforstatuschecks.outputs.status == 'success'
     - uses: eregon/use-ruby-action@master
       with:
         ruby-version: jruby
