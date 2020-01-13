@@ -1,3 +1,6 @@
+## 3.3.9
+ - fix tests
+
 ## 3.3.8
  - Yet Another fake bump
 
