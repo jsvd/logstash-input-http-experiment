@@ -43,4 +43,4 @@ jobs:
     - name: Compute current version
       run: ruby -rrubygems -e 'gemspec_path = Dir.glob("*.gemspec").first; puts Gem::Specification.load(gemspec_path).version' > GEMSPEC_VERSION
     - name: Push tag
-      run: git tag "v$(cat GEMSPEC_VERSION)" && 
+      run: git tag "v$(cat GEMSPEC_VERSION)" && git push --tags
