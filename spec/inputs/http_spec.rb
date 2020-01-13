@@ -130,7 +130,7 @@ describe LogStash::Inputs::Http do
                       :body => "hello").call
           event = logstash_queue.pop
           expect(event.get("request_headers")).to be_a(Hash)
-          expect(event.get("request_headers")).to include("request_method" => "POST")
+          expect(event.get("request_headers")).to include("request_method" => "HEAD")
         end
       end
     end
