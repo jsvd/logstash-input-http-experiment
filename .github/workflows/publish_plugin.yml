@@ -13,10 +13,10 @@ jobs:
     - uses: actions/setup-ruby@v1
       with:
         ruby-version: '2.x'
-    - name: Fetch ruby script
-      run: wget https://raw.githubusercontent.com/jsvd/logstash-plugin-actions/master/action.rb
-    - name: Verify if version was bumped
-      run: ruby action.rb
+    - name: Compute current version
+      run: ruby -rrubygems -e "puts Gem::Specification.load('logstash-input-http.gemspec').version" > GEMSPEC_VERSION
+    - name: Verify if git tag exists
+      run: ruby -e "exit(1) if IO.popen(\"git tag -l\").read.split(\"\n\").include?(\"v#{IO.read('GEMSPEC_VERSION').strip}\")"
   publish:
     needs: verify_version
     runs-on: ubuntu-latest
