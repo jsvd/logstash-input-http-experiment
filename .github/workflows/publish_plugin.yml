@@ -13,6 +13,8 @@ jobs:
     - uses: actions/setup-ruby@v1
       with:
         ruby-version: '2.x'
+    - name: Fetch git tags
+      run: git fetch --tags
     - name: Verify if git tag exists
       run: ruby -rrubygems -e 'gemspec_path = Dir.glob("*.gemspec").first; version = "v" + Gem::Specification.load(gemspec_path).version.to_s; versions = IO.popen("git tag -l").read.split("\n"); exit(1) if versions.include?(version)'
   publish:
