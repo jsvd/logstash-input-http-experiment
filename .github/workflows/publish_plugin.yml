@@ -13,23 +13,21 @@ jobs:
     - uses: actions/setup-ruby@v1
       with:
         ruby-version: '2.x'
-    - name: Compute current version
-      run: ruby -rrubygems -e "puts Gem::Specification.load('logstash-input-http.gemspec').version" > GEMSPEC_VERSION
     - name: Verify if git tag exists
-      run: ruby -e "exit(1) if IO.popen(\"git tag -l\").read.split(\"\n\").include?(\"v#{IO.read('GEMSPEC_VERSION').strip}\")"
+      run: ruby -rrubygems -e 'gemspec_path = Dir.glob("*.gemspec").first; version = Gem::Specification.load(gemspec_path).version; versions = IO.popen("git tag -l").read.split("\n"); exit(1) if versions.include?(version)'
   publish:
     needs: verify_version
     runs-on: ubuntu-latest
     steps:
-    - name: 'Waiting for CI'
-      id: waitforstatuschecks
-      uses: "WyriHaximus/github-action-wait-for-status@0.1.0"
-      with:
-        ignoreActions: publish
-        checkInterval: 10
-    - name: Abort publish
-      if: steps.waitforstatuschecks.outputs.status == 'failure'
-      run: exit 1
+      #  - name: 'Waiting for CI'
+      #    id: waitforstatuschecks
+      #    uses: "WyriHaximus/github-action-wait-for-status@0.1.0"
+      #    with:
+      #      ignoreActions: publish
+      #      checkInterval: 10
+      #  - name: Abort publish
+      #    if: steps.waitforstatuschecks.outputs.status == 'failure'
+      #    run: exit 1
     - uses: actions/checkout@v1
     - uses: eregon/use-ruby-action@master
       with:
@@ -43,6 +41,6 @@ jobs:
     - name: Publish gem
       run: echo "publish"
     - name: Compute current version
-      run: ruby -rrubygems -e "puts Gem::Specification.load('logstash-input-http.gemspec').version" > GEMSPEC_VERSION
+      run: ruby -rrubygems -e 'gemspec_path = Dir.glob("*.gemspec").first; puts Gem::Specification.load(gemspec_path).version' > GEMSPEC_VERSION
     - name: Push tag
-      run: git tag "v$(cat GEMSPEC_VERSION)" && git push "v$(cat GEMSPEC_VERSION)"
+      run: git tag "v$(cat GEMSPEC_VERSION)" && 
