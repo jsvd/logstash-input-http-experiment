@@ -19,15 +19,15 @@ jobs:
     needs: verify_version
     runs-on: ubuntu-latest
     steps:
-      #  - name: 'Waiting for CI'
-      #    id: waitforstatuschecks
-      #    uses: "WyriHaximus/github-action-wait-for-status@0.1.0"
-      #    with:
-      #      ignoreActions: publish
-      #      checkInterval: 10
-      #  - name: Abort publish
-      #    if: steps.waitforstatuschecks.outputs.status == 'failure'
-      #    run: exit 1
+    - name: 'Waiting for CI'
+      id: waitforstatuschecks
+      uses: "WyriHaximus/github-action-wait-for-status@0.1.0"
+      with:
+        ignoreActions: publish
+        checkInterval: 10
+    - name: Abort publish
+      if: steps.waitforstatuschecks.outputs.status == 'failure'
+      run: exit 1
     - uses: actions/checkout@v2
     - uses: eregon/use-ruby-action@master
       with:
