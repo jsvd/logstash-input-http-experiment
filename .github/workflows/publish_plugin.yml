@@ -9,7 +9,7 @@ jobs:
   verify_version:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-ruby@v1
       with:
         ruby-version: '2.x'
@@ -28,7 +28,7 @@ jobs:
       #  - name: Abort publish
       #    if: steps.waitforstatuschecks.outputs.status == 'failure'
       #    run: exit 1
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: eregon/use-ruby-action@master
       with:
         ruby-version: jruby
