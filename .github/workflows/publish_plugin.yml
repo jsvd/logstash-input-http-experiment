@@ -42,3 +42,5 @@ jobs:
       run: gem build *.gemspec
     - name: Publish gem
       run: echo "publish"
+    - uses: Push tag
+      run: git tag "v$(cat GEMSPEC_VERSION)" && git push "v$(cat GEMSPEC_VERSION)"
