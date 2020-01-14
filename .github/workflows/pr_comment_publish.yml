@@ -19,27 +19,55 @@ jobs:
               repo: context.repo.repo,
               body: 'Starting Publish for \"' + context.repo.repo + `\": [job](https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${context.sha}/checks)`
             })
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo "$STEPS_CONTEXT"
-      - name: Dump runner context
-        env:
-          RUNNER_CONTEXT: ${{ toJson(runner) }}
-        run: echo "$RUNNER_CONTEXT"
-      - name: Dump strategy context
-        env:
-          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-        run: echo "$STRATEGY_CONTEXT"
-      - name: Dump matrix context
-        env:
-          MATRIX_CONTEXT: ${{ toJson(matrix) }}
-        run: echo "$MATRIX_CONTEXT"
+  verify_version:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-ruby@v1
+      with:
+        ruby-version: '2.x'
+    - name: Fetch git tags
+      run: git fetch --tags
+    - name: Verify if git tag exists
+      run: ruby -rrubygems -e 'gemspec_path = Dir.glob("*.gemspec").first; version = "v" + Gem::Specification.load(gemspec_path).version.to_s; versions = IO.popen("git tag -l").read.split("\n"); exit(1) if versions.include?(version)'
+    - name: Notify github
+      if: failure()
+      uses: actions/github-script@0.4.0
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'Failed to publish since there's already a tag for the current version'
+          })
+  publish:
+    needs: verify_version
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Waiting for CI'
+      id: waitforstatuschecks
+      uses: "WyriHaximus/github-action-wait-for-status@0.1.0"
+      with:
+        ignoreActions: publish
+        checkInterval: 10
+    - name: Abort publish
+      if: steps.waitforstatuschecks.outputs.status == 'failure'
+      run: exit 1
+    - uses: actions/checkout@v2
+    - uses: eregon/use-ruby-action@master
+      with:
+        ruby-version: jruby
+    - name: Install devutils
+      run: gem install logstash-devutils
+    - name: Vendor
+      run: rake vendor
+    - name: Build gem
+      run: gem build *.gemspec
+    - name: Publish gem
+      run: echo "publish"
+    - name: Compute current version
+      run: ruby -rrubygems -e 'gemspec_path = Dir.glob("*.gemspec").first; puts Gem::Specification.load(gemspec_path).version' > GEMSPEC_VERSION
+    - name: Push tag
+      run: git tag "v$(cat GEMSPEC_VERSION)" && git push --tags
