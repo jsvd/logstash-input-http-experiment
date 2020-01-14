@@ -17,7 +17,7 @@ jobs:
               issue_number: context.issue,
               owner: context.owner,
               repo: context.repo,
-              body: 'Starting Publish for ' + github.repository.name
+              body: 'Starting Publish for ' + github.event.repository.name
             })
       - name: Dump GitHub context
         env:
