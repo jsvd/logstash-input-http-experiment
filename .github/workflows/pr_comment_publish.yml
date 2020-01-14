@@ -14,7 +14,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             github.issues.createComment({
-              issue_number: context.issue,
+              issue_number: context.issue.number,
               owner: context.owner,
               repo: context.repo,
               body: 'Starting Publish for ' + context.repo
