@@ -8,6 +8,8 @@ jobs:
   check_if_PR:
     runs-on: [ubuntu-latest]
     if: github.event.issue.pull_request != null
+    steps:
+      - run: echo "Trigering a publish" 
   identify_string:
     runs-on: ubuntu-latest
     steps:
