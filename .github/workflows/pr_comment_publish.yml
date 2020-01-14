@@ -5,14 +5,20 @@ on:
     types: created
 
 jobs:
-  check_if_PR:
-    runs-on: [ubuntu-latest]
-    if: github.event.issue.pull_request != null
-    steps:
-      - run: echo "Trigering a publish" 
   identify_string:
     runs-on: ubuntu-latest
+    if: (github.event.issue.pull_request != null) && startsWith("Please publish plugin", github.event.comment.body)
     steps:
+      - uses: actions/github-script@0.4.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue,
+              owner: context.owner,
+              repo: context.repo,
+              body: 'Starting Publish for ${{ context.repo }}'
+            })
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
