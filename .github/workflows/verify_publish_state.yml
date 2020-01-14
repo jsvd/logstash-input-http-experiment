@@ -10,3 +10,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: jsvd/logstash-plugin-actions@master
+    - uses: actions/github-script@0.4.0
+      if: failure()
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'This Pull Request doesn\'t bump the gemspec version and CHANGELOG.md, making it more difficult to quickly publish this change.'
+          })

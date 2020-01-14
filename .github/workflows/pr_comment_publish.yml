@@ -7,7 +7,7 @@ on:
 jobs:
   identify_string:
     runs-on: ubuntu-latest
-    if: (github.event.issue.pull_request != null) && startsWith('Please publish plugin', github.event.comment.body)
+    if: (github.event.issue.pull_request != null) && startsWith('Please publish this plugin', github.event.comment.body)
     steps:
       - uses: actions/github-script@0.4.0
         with:
