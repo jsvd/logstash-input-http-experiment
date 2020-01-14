@@ -40,7 +40,7 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: 'Failed to publish since there's already a tag for the current version'
+            body: 'Failed to publish since there\'s already a tag for the current version'
           })
   publish:
     needs: verify_version
