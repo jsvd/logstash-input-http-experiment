@@ -15,9 +15,9 @@ jobs:
           script: |
             github.issues.createComment({
               issue_number: context.issue.number,
-              owner: context.owner,
-              repo: context.repo,
-              body: 'Starting Publish for ' + context.repo
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Starting Publish for ' + context.repo.repo
             })
       - name: Dump GitHub context
         env:
