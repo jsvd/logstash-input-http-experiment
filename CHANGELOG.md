@@ -1,3 +1,6 @@
+## 3.3.12
+ - New release
+
 ## 3.3.11
  - fix tests
  
