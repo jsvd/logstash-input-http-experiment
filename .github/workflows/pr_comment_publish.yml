@@ -5,6 +5,9 @@ on:
     types: created
 
 jobs:
+  check_if_PR:
+    runs-on: [ubuntu-latest]
+    if: github.event.issue.pull_request != null
   identify_string:
     runs-on: ubuntu-latest
     steps:
