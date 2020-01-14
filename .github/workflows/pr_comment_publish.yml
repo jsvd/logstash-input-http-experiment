@@ -5,7 +5,7 @@ on:
     types: created
 
 jobs:
-  identify_string:
+  is_this_pr:
     runs-on: ubuntu-latest
     if: (github.event.issue.pull_request != null) && startsWith('Please publish this plugin', github.event.comment.body)
     steps:
@@ -17,7 +17,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Starting Publish for \"' + context.repo.repo + `\": [job](https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${context.sha}/checks)`
+              body: 'Starting Publish for \"' + context.repo.repo + `\", track the progress [here](https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${context.sha}/checks)`
             })
   verify_version:
     runs-on: ubuntu-latest
