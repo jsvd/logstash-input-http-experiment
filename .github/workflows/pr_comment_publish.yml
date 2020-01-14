@@ -40,7 +40,7 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: 'Failed to publish since there\'s already a tag for the current version'
+            body: '❌ Failed to publish since there\'s already a tag for the current version'
           })
   publish:
     needs: verify_version
@@ -71,3 +71,14 @@ jobs:
       run: ruby -rrubygems -e 'gemspec_path = Dir.glob("*.gemspec").first; puts Gem::Specification.load(gemspec_path).version' > GEMSPEC_VERSION
     - name: Push tag
       run: git tag "v$(cat GEMSPEC_VERSION)" && git push --tags
+    - name: Notify github
+      uses: actions/github-script@0.4.0
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '✅ Published new version!'
+          })
