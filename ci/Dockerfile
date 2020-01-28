@@ -1,5 +1,8 @@
 ARG ELASTIC_STACK_VERSION
 FROM docker.elastic.co/logstash/logstash:$ELASTIC_STACK_VERSION
+USER root
+RUN yum install -y git
+USER logstash
 COPY --chown=logstash:logstash Gemfile /usr/share/plugins/plugin/Gemfile
 COPY --chown=logstash:logstash *.gemspec /usr/share/plugins/plugin/
 COPY --chown=logstash:logstash VERSION /usr/share/plugins/plugin/
