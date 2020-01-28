@@ -1,5 +1,1 @@
-import:
-  - jsvd/travis-test-yaml-template:defaults.yml
-  - jsvd/travis-test-yaml-template:jobs.yml
-  - jsvd/travis-test-yaml-template:exec.yml
-  - jsvd/travis-test-yaml-template:deploy.yml
+import: jsvd/travis-test-yaml-template:travis.yml
