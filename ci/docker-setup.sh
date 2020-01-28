@@ -12,24 +12,6 @@ if [ -z "${ELASTIC_STACK_VERSION}" ]; then
     exit 1
 fi
 
-echo "Fetching versions from $VERSION_URL"
-VERSIONS=$(curl $VERSION_URL)
-
-if [[ "$SNAPSHOT" = "true" ]]; then
-    ELASTIC_STACK_RETRIEVED_VERSION=$(echo $VERSIONS | jq '.snapshots."'"$ELASTIC_STACK_VERSION"'"')
-    echo $ELASTIC_STACK_RETRIEVED_VERSION
-else
-    ELASTIC_STACK_RETRIEVED_VERSION=$(echo $VERSIONS | jq '.releases."'"$ELASTIC_STACK_VERSION"'"')
-fi
-
-if [[ "$ELASTIC_STACK_RETRIEVED_VERSION" != "null" ]]; then
-    # remove starting and trailing double quotes
-    ELASTIC_STACK_RETRIEVED_VERSION="${ELASTIC_STACK_RETRIEVED_VERSION%\"}"
-    ELASTIC_STACK_RETRIEVED_VERSION="${ELASTIC_STACK_RETRIEVED_VERSION#\"}"
-    echo "Translated $ELASTIC_STACK_VERSION to ${ELASTIC_STACK_RETRIEVED_VERSION}"
-    export ELASTIC_STACK_VERSION=$ELASTIC_STACK_RETRIEVED_VERSION
-fi
-
 echo "Testing against version: $ELASTIC_STACK_VERSION"
 
 if [[ "$ELASTIC_STACK_VERSION" = *"-SNAPSHOT" ]]; then
@@ -51,5 +33,5 @@ if [ -f Gemfile.lock ]; then
     rm Gemfile.lock
 fi
 
-docker-compose -f ci/unit/docker-compose.yml down
-docker-compose -f ci/unit/docker-compose.yml build
+docker-compose -f ci/docker-compose.yml down
+docker-compose -f ci/docker-compose.yml build
