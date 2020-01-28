@@ -1,3 +1,6 @@
+## 3.3.12
+ - fix tests
+ 
 ## 3.3.11
  - fix tests
  
