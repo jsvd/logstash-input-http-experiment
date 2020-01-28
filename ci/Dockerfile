@@ -1,4 +1,4 @@
-uRG ELASTIC_STACK_VERSION
+ARG ELASTIC_STACK_VERSION
 FROM docker.elastic.co/logstash/logstash:$ELASTIC_STACK_VERSION
 COPY --chown=logstash:logstash Gemfile /usr/share/plugins/plugin/Gemfile
 COPY --chown=logstash:logstash *.gemspec /usr/share/plugins/plugin/
